@@ -1,0 +1,34 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mostrar Imagen</title>
+    <style>
+        body {
+            margin: 0; /* Elimina el margen predeterminado del cuerpo */
+            overflow: hidden; /* Evita que el contenido se desborde de la pantalla */
+        }
+
+        img {
+            max-width: 100%; /* Hace que la imagen no sea más grande que el ancho de su contenedor */
+            max-height: 100vh; /* Hace que la imagen no sea más alta que el 100% de la altura de la ventana */
+            display: block; /* Elimina cualquier espacio adicional debajo de la imagen */
+            margin: auto; /* Centra la imagen horizontalmente */
+        }
+        .barra-lin{
+            background-color: black;
+            height: 2.3em;
+        }
+        .barra-lin img{
+            height: 2.3em;
+            margin-left: 10em;
+        }
+    </style>
+</head>
+<body>
+    <div class="barra-lin"><a href="login"><img src="{% static 'nav.png' %}" alt=""></a></div>
+    <img src="{% static 'inicio.png' %}" alt="mierdOT" srcset="">
+</body>
+</html>

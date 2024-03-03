@@ -1,0 +1,139 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title></title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
+    <style>
+        body {
+        display: flex;
+        flex-direction: column;
+        min-height: 100vh; /* This ensures that the body takes at least the full height of the viewport */
+      }
+
+        img {
+            max-width: 100%; /* Hace que la imagen no sea más grande que el ancho de su contenedor */
+            max-height: 100vh; /* Hace que la imagen no sea más alta que el 100% de la altura de la ventana */
+            display: block; /* Elimina cualquier espacio adicional debajo de la imagen */
+            margin: auto; /* Centra la imagen horizontalmente */
+        }
+        .barra-lin{
+            background-color: black;
+            height: 2.3em;
+        }
+        .barra-lin img{
+            height: 2.3em;
+            margin-left: 10em;
+        }
+        footer {
+        margin-top: auto; /* This pushes the footer to the bottom */
+      }
+        .gri{
+            background-color: #ededed;
+        }
+        main {
+            flex: 1; /* Esto hace que el contenido principal ocupe todo el espacio disponible */
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+        }
+    .scrollable-column {
+      height: 300px; /* Altura fija de la columna */
+      overflow-y: scroll; /* Habilita la barra de desplazamiento vertical */
+      border: 1px solid #ddd; /* Borde para visualización */
+      padding: 10px; /* Espaciado interno */
+      float: left; /* Alinea a la izquierda */
+    
+    }
+    .right-section {
+      float: left; /* Alinea a la derecha */
+      width: 75%; /* Ocupa el 50% del ancho del contenedor padre */
+      padding: 10px; /* Espaciado interno */
+    }
+    /* Estilos para los elementos dentro de la columna */
+    .scrollable-item {
+      margin-bottom: 10px; /* Espaciado inferior entre elementos */
+      white-space: nowrap;
+    }
+    .scrollable-item:hover {
+      background-color: #ebed79; /* Color de fondo al pasar el cursor por encima */
+    }
+    </style>
+</head>
+<header><img src="{% static 'head.png' %}" alt=""></header>
+<body>
+    <!-- <h2>Welcome, {{ user.username }}!</h2>
+     -->
+    <main>
+        <div class=" card border-0 mb-3 me-auto ms-0" style="width: 18rem; height: 70vh;">
+          <div class="card-body"> 
+            <img class="mb-3"  src="{% static 'prof.png' %}" alt="">
+            <div class="scrollable-column">
+              <!-- Elementos dentro de la columna scrollable -->
+              <div class="scrollable-item" onclick="showContent('Actualizar Datos Personales')">Actualizar Datos Personales</div>
+                    <div class="scrollable-item" onclick="showContent('Hoja de Vida')">Hoja de Vida</div>
+                    <div class="scrollable-item" onclick="showContent('Consulta de Documentos')">Consulta de Documentos</div>
+                    <div class="scrollable-item" onclick="showContent('Consulta de Turnos')">Consulta de Turnos</div>
+                    <div class="scrollable-item" onclick="showContent('Solicitud de Movilidad')">Solicitud de Movilidad</div>
+                    <div class="scrollable-item" onclick="showContent('Cargue de Requisitos de Matrícula')">Cargue de Requisitos de Matrícula</div>
+                    <div class="scrollable-item" onclick="showContent('Matrícula Individual')">Matrícula Individual</div>
+                    <div class="scrollable-item" onclick="showContent('Histórico de Notas')">Histórico de Notas</div>
+                    <div class="scrollable-item" onclick="showContent('Horario del estudiante')">Horario del estudiante</div>
+              <!-- Agrega más elementos según sea necesario -->
+            </div>
+          </div>
+        </div>
+        <div class="right-section" id="rightSection">
+            <!-- Contenido que cambiará al hacer clic en un apartado -->
+          </div>
+      </main>
+
+      <script>
+        function showContent(apartado) {
+          // Resalta el elemento seleccionado y desmarca los demás
+          var items = document.getElementsByClassName('scrollable-item');
+          for (var i = 0; i < items.length; i++) {
+            items[i].classList.remove('selected');
+          }
+      
+          // Resalta el elemento seleccionado
+          event.target.classList.add('selected');
+      
+          // Carga y muestra el contenido desde el archivo HTML correspondiente
+          var rightSection = document.getElementById('rightSection');
+      
+          if (apartado === 'Horario del estudiante') {
+            // Cargar contenido desde el archivo HTML específico
+            fetch('{% url "horario_view" %}')
+              .then(response => response.text())
+              .then(data => {
+                rightSection.innerHTML = data;
+              })
+              .catch(error => {
+                console.error('Error loading content:', error);
+                rightSection.innerHTML = 'Error al cargar el contenido.';
+              });
+          } else {
+            // Cargar contenido general o específico para otros apartados
+            var contentFilePath = 'path/to/' + apartado.toLowerCase().replace(/\s/g, '-') + '.html';
+      
+            fetch(contentFilePath)
+              .then(response => response.text())
+              .then(data => {
+                rightSection.innerHTML = data;
+              })
+              .catch(error => {
+                console.error('Error loading content:', error);
+                rightSection.innerHTML = 'Error al cargar el contenido.';
+              });
+          }
+        }
+      </script>
+      
+</body>
+<footer class="mt-4 mb-1"><img src="{% static 'foot.png' %}" alt=""></footer>
+
+</html>
